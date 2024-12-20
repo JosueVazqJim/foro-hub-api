@@ -1,0 +1,1 @@
+ALTER TABLE usuarios CHANGE `correoElectronico` `email` varchar(255);
