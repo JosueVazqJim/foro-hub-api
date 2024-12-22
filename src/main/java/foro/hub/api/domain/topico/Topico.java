@@ -3,6 +3,7 @@ package foro.hub.api.domain.topico;
 import foro.hub.api.domain.curso.Curso;
 import foro.hub.api.domain.usuario.Usuario;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -43,5 +44,10 @@ public class Topico {
 		this.usuario = usuario;
 		this.curso = curso;
 		this.eliminado = false;
+	}
+
+	public void actualizar(@Valid DatosActualizarTopico datosActualizarTopico) {
+		this.titulo = datosActualizarTopico.titulo();
+		this.mensaje = datosActualizarTopico.mensaje();
 	}
 }

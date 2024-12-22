@@ -46,4 +46,13 @@ public class TopicoController {
 		var topico = topicoRepository.findById(id).orElseThrow();
 		return ResponseEntity.ok(new DatosListadoTopicos(topico));
 	}
+
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<DatosResTopico> actualizarTopico(@PathVariable @Valid Long id,
+	                                                       @RequestBody @Valid DatosActualizarTopico
+			                                                       datosActualizarTopico) {
+		var respuesta = logicaTopico.actualizar(id, datosActualizarTopico);
+		return ResponseEntity.ok(respuesta);
+	}
 }

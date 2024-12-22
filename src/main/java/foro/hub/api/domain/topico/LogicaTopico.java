@@ -4,6 +4,7 @@ import foro.hub.api.domain.ValidacionException;
 import foro.hub.api.domain.curso.CursoRepository;
 import foro.hub.api.domain.topico.validaciones.IValidadoresTopicos;
 import foro.hub.api.domain.usuario.UsuarioRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +45,17 @@ public class LogicaTopico {
 		topicoRepository.save(topico);
 
 		return new DatosResTopico(topico);
+	}
+
+	public DatosResTopico actualizar(@Valid Long id, @Valid DatosActualizarTopico datosActualizarTopico) {
+		var optionalTopico = topicoRepository.findById(id);
+		if (optionalTopico.isPresent()) {
+			var topico = optionalTopico.get();
+			topico.actualizar(datosActualizarTopico);
+			topicoRepository.save(topico);
+			return new DatosResTopico(topico);
+		} else {
+			throw new ValidacionException("No existe un tópico con el id indicado");
+		}
 	}
 }

@@ -13,9 +13,9 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
 	@Query(""" 
 		SELECT CASE WHEN COUNT(t) > 0 THEN TRUE ELSE FALSE END
 		FROM Topico t
-		WHERE t.titulo = :titulo AND t.usuario.id = :idUsuario
+		WHERE t.titulo = :titulo AND t.mensaje = :mensaje
 	""")
-	boolean findByTituloAndUsuarioId(@NotBlank String titulo, @NotNull Long idUsuario);
+	boolean findByTituloAndMensaje(@NotBlank String titulo, @NotNull String mensaje);
 
 	Page<Topico> findByEliminadoFalse(Pageable paginacion);
 }

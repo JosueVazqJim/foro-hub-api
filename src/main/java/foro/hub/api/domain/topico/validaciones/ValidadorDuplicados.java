@@ -14,9 +14,10 @@ public class ValidadorDuplicados implements IValidadoresTopicos {
 
 	public void validar(DatosRegistroTopico datosRegistroTopico) {
 		//buscaoms si existe un topico con los mismos datos
-		boolean duplicado = topicoRepository.findByTituloAndUsuarioId(datosRegistroTopico.titulo(), datosRegistroTopico.idUsuario());
+		boolean duplicado = topicoRepository.findByTituloAndMensaje(datosRegistroTopico.titulo(),
+				datosRegistroTopico.mensaje());
 		if (duplicado) {
-			throw new ValidacionException("Ya existe un topico con el mismo titulo");
+			throw new ValidacionException("Ya existe un topico con el mismo titulo y mensaje");
 		}
 	}
 }
