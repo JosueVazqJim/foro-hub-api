@@ -48,7 +48,7 @@ public class LogicaTopico {
 	}
 
 	public DatosResTopico actualizar(@Valid Long id, @Valid DatosActualizarTopico datosActualizarTopico) {
-		var optionalTopico = topicoRepository.findById(id);
+		var optionalTopico = topicoRepository.findByIdAndEliminadoFalse(id);
 		if (optionalTopico.isPresent()) {
 			var topico = optionalTopico.get();
 			topico.actualizar(datosActualizarTopico);
@@ -60,7 +60,7 @@ public class LogicaTopico {
 	}
 
 	public void eliminar(@Valid Long id) {
-		var optionalTopico = topicoRepository.findById(id);
+		var optionalTopico = topicoRepository.findByIdAndEliminadoFalse(id);
 		if (optionalTopico.isPresent()) {
 			var topico = optionalTopico.get();
 			topico.setEliminado(true);

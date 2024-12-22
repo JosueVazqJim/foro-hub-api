@@ -48,5 +48,7 @@ public class Topico {
 	public void actualizar(@Valid DatosActualizarTopico datosActualizarTopico) {
 		this.titulo = datosActualizarTopico.titulo();
 		this.mensaje = datosActualizarTopico.mensaje();
+		this.usuario.setId(datosActualizarTopico.idUsuario());
+		this.curso.setId(datosActualizarTopico.idCurso());
 	}
 }

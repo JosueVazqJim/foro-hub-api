@@ -61,7 +61,7 @@ public class TopicoController {
 	@Transactional
 	public ResponseEntity eliminarTopico(@PathVariable @Valid Long id) {
 		//borrado logico
-		//logicaTopico.eliminar(id);
+//		logicaTopico.eliminar(id);
 
 		//borrado fisico
 		var optionalTopico = topicoRepository.findById(id);
