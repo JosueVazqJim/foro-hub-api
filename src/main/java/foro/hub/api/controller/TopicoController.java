@@ -1,5 +1,6 @@
 package foro.hub.api.controller;
 
+import foro.hub.api.domain.ValidacionException;
 import foro.hub.api.domain.topico.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,21 @@ public class TopicoController {
 			                                                       datosActualizarTopico) {
 		var respuesta = logicaTopico.actualizar(id, datosActualizarTopico);
 		return ResponseEntity.ok(respuesta);
+	}
+
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity eliminarTopico(@PathVariable @Valid Long id) {
+		//borrado logico
+		//logicaTopico.eliminar(id);
+
+		//borrado fisico
+		var optionalTopico = topicoRepository.findById(id);
+		if (optionalTopico.isPresent()) {
+			topicoRepository.delete(optionalTopico.get());
+		} else {
+			throw new ValidacionException("No existe un tópico con el id indicado");
+		}
+		return ResponseEntity.noContent().build();
 	}
 }

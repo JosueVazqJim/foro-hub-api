@@ -58,4 +58,15 @@ public class LogicaTopico {
 			throw new ValidacionException("No existe un tópico con el id indicado");
 		}
 	}
+
+	public void eliminar(@Valid Long id) {
+		var optionalTopico = topicoRepository.findById(id);
+		if (optionalTopico.isPresent()) {
+			var topico = optionalTopico.get();
+			topico.setEliminado(true);
+			topicoRepository.save(topico);
+		} else {
+			throw new ValidacionException("No existe un tópico con el id indicado");
+		}
+	}
 }
