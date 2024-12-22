@@ -6,8 +6,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice // un restControllerAdvice es un componente de spring que permite
 // interceptar las llamadas a los controladores
@@ -24,6 +26,18 @@ public class TratadorErrores {
 	public ResponseEntity tratarError400(MethodArgumentNotValidException e) {
 		var errores = e.getFieldErrors().stream().map(DatosErrorValidacion::new).toList();
 		return ResponseEntity.badRequest().body(errores);
+	}
+
+	//tratar error de elemento no encontrado
+	@ExceptionHandler(NoSuchElementException.class)
+	public ResponseEntity elementoNoEncontrado() {
+		return ResponseEntity.notFound().build();
+	}
+
+	//recurso no encontrado
+	@ExceptionHandler(NoResourceFoundException.class)
+	public ResponseEntity recursoNoEncontrado() {
+		return ResponseEntity.notFound().build();
 	}
 
 	private record DatosErrorValidacion(String campo, String error) {

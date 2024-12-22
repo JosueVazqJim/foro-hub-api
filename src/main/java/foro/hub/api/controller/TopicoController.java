@@ -40,4 +40,10 @@ public class TopicoController {
 			direction = Sort.Direction.DESC) Pageable paginacion) {
 		return ResponseEntity.ok(topicoRepository.findByEliminadoFalse(paginacion).map(DatosListadoTopicos::new));
 	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<DatosListadoTopicos> getTopico(@PathVariable @Valid Long id) {
+		var topico = topicoRepository.findById(id).orElseThrow();
+		return ResponseEntity.ok(new DatosListadoTopicos(topico));
+	}
 }
