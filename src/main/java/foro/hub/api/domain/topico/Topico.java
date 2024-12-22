@@ -21,7 +21,8 @@ public class Topico {
 	private Long id;
 	private String titulo;
 	private String mensaje;
-	private LocalDateTime fecha_creacion;
+	@Column(name = "fecha_creacion")
+	private LocalDateTime fechaCreacion;
 	private String status;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -37,7 +38,7 @@ public class Topico {
 	public Topico(DatosRegistroTopico datosRegistroTopico, Usuario usuario, Curso curso) {
 		this.titulo = datosRegistroTopico.titulo();
 		this.mensaje = datosRegistroTopico.mensaje();
-		this.fecha_creacion = LocalDateTime.now();
+		this.fechaCreacion = LocalDateTime.now();
 		this.status = "Activo";
 		this.usuario = usuario;
 		this.curso = curso;
