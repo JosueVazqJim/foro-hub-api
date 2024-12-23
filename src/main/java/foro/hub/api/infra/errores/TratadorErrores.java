@@ -1,11 +1,16 @@
 package foro.hub.api.infra.errores;
 
+import foro.hub.api.domain.UsuarioInvalido;
 import foro.hub.api.domain.ValidacionException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
@@ -35,9 +40,24 @@ public class TratadorErrores {
 	}
 
 	//recurso no encontrado
-	@ExceptionHandler(NoResourceFoundException.class)
+	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity recursoNoEncontrado() {
 		return ResponseEntity.notFound().build();
+	}
+
+	@ExceptionHandler(UsuarioInvalido.class)
+	public ResponseEntity usuarioNoEncontrado() {
+		return ResponseEntity.notFound().build();
+	}
+
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity tratarErrorTipoArgumento(MethodArgumentTypeMismatchException e) {
+		return ResponseEntity.badRequest().body(new DatosError(e.getMessage()));
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity tratarErrorGeneral(HttpMessageNotReadableException e) {
+		return ResponseEntity.badRequest().body(new DatosError(e.getMessage()));
 	}
 
 	private record DatosErrorValidacion(String campo, String error) {

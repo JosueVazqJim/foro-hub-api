@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class LogicaTopico {
@@ -51,11 +52,18 @@ public class LogicaTopico {
 		var optionalTopico = topicoRepository.findByIdAndEliminadoFalse(id);
 		if (optionalTopico.isPresent()) {
 			var topico = optionalTopico.get();
+			if (!usuarioRepository.existsById(datosActualizarTopico.idUsuario())) {
+				throw new ValidacionException("No existe un usuario con el id indicado");
+			}
+
+			if (!cursoRepository.existsById(datosActualizarTopico.idCurso())) {
+				throw new ValidacionException("No existe un curso con el id indicado");
+			}
 			topico.actualizar(datosActualizarTopico);
 			topicoRepository.save(topico);
 			return new DatosResTopico(topico);
 		} else {
-			throw new ValidacionException("No existe un tópico con el id indicado");
+			throw new NoSuchElementException("No existe un tópico con el id indicado");
 		}
 	}
 
