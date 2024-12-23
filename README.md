@@ -61,6 +61,22 @@
 
 ---
 
+## 📸 Screenshots
+
+### Endpoint Responses
+
+#### \`GET /topicos\`
+![GET /topicos](images/get.png)
+
+#### \`POST /topicos\`
+![POST /topicos](images/post.png)
+
+#### \`PUT /topicos/{id}\`
+![PUT /topicos/{id}](images/put.png)
+
+#### \`DELETE /topicos/{id}\`
+![DELETE /topicos/{id}](images/delete.png)
+
 ## 📁 Project Structure
 
 ```sh
