@@ -1,5 +1,6 @@
 package foro.hub.api.infra.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,20 +16,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfigurations {
 
 	@Autowired
 	private SecurityFilter securityFilter;
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http.csrf(csrf -> csrf.disable())
-				.sessionManagement(sm -> sm
-						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(req -> {
-					req.requestMatchers(HttpMethod.POST, "/login").permitAll();
-					req.anyRequest().authenticated();
-				})
+	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+		return httpSecurity.csrf(csrf -> csrf.disable())
+				.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests((authorizeHttpRequest) ->
+						authorizeHttpRequest.requestMatchers(HttpMethod.POST, "/login").permitAll()
+								.requestMatchers("v3/api-docs", "/v3/**", "/swagger-ui/**", "/swagger-ui/index.html").permitAll()
+								.anyRequest()
+								.authenticated()
+				)
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
