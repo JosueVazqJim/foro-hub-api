@@ -2,6 +2,11 @@ package foro.hub.api.controller;
 
 import foro.hub.api.domain.ValidacionException;
 import foro.hub.api.domain.topico.*;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +22,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/topicos")
+@SecurityRequirement(name = "bearer-key")
 public class TopicoController {
 
 	@Autowired
@@ -37,6 +43,11 @@ public class TopicoController {
 	}
 
 	@GetMapping
+	@Parameters({
+			@Parameter(name = "page", in = ParameterIn.QUERY, schema = @Schema(type = "integer", defaultValue = "0")),
+			@Parameter(name = "size", in = ParameterIn.QUERY, schema = @Schema(type = "integer", defaultValue = "10")),
+			@Parameter(name = "sort", in = ParameterIn.QUERY, schema = @Schema(type = "string", example = "fechaCreacion,desc"))
+	})
 	public ResponseEntity<Page<DatosListadoTopicos>> getTopicos(@PageableDefault(size = 10, sort = "fechaCreacion",
 			direction = Sort.Direction.DESC) Pageable paginacion) {
 		return ResponseEntity.ok(topicoRepository.findByEliminadoFalse(paginacion).map(DatosListadoTopicos::new));
