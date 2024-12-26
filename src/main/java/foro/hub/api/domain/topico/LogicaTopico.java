@@ -59,6 +59,11 @@ public class LogicaTopico {
 			if (!cursoRepository.existsById(datosActualizarTopico.idCurso())) {
 				throw new ValidacionException("No existe un curso con el id indicado");
 			}
+			boolean duplicado = topicoRepository.findByTituloAndMensaje(datosActualizarTopico.titulo(),
+					datosActualizarTopico.mensaje());
+			if (duplicado) {
+				throw new ValidacionException("Ya existe un topico con el mismo titulo y mensaje");
+			}
 			topico.actualizar(datosActualizarTopico);
 			topicoRepository.save(topico);
 			return new DatosResTopico(topico);

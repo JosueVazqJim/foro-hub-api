@@ -46,9 +46,17 @@ public class Topico {
 	}
 
 	public void actualizar(@Valid DatosActualizarTopico datosActualizarTopico) {
-		this.titulo = datosActualizarTopico.titulo();
-		this.mensaje = datosActualizarTopico.mensaje();
-		this.usuario.setId(datosActualizarTopico.idUsuario());
-		this.curso.setId(datosActualizarTopico.idCurso());
+		if (datosActualizarTopico.titulo() != null) {
+			this.titulo = datosActualizarTopico.titulo();
+		}
+		if (datosActualizarTopico.mensaje() != null) {
+			this.mensaje = datosActualizarTopico.mensaje();
+		}
+		if (datosActualizarTopico.idCurso() != null) {
+			this.curso.setId(datosActualizarTopico.idCurso());
+		}
+		if (datosActualizarTopico.idUsuario() != null) {
+			this.usuario.setId(datosActualizarTopico.idUsuario());
+		}
 	}
 }
