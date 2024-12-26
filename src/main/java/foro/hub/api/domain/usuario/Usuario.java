@@ -1,6 +1,7 @@
 package foro.hub.api.domain.usuario;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,10 +27,10 @@ public class Usuario implements UserDetails {
 	private String contrasena;
 	private boolean eliminado;
 
-	public Usuario(DatosRegistroUsuario datosRegistroUsuario) {
+	public Usuario(DatosRegistroUsuario datosRegistroUsuario, String contrasena) {
 		this.nombre = datosRegistroUsuario.nombre();
 		this.email = datosRegistroUsuario.email();
-		this.contrasena = datosRegistroUsuario.contrasena();
+		this.contrasena = contrasena;
 		this.eliminado = false;
 	}
 
@@ -66,5 +67,33 @@ public class Usuario implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return UserDetails.super.isEnabled();
+	}
+
+	public void actualizar(@Valid DatosActualizarUsuario datosActualizarUsuario) {
+		if (datosActualizarUsuario.nombre() != null) {
+			this.nombre = datosActualizarUsuario.nombre();
+		}
+		if (datosActualizarUsuario.email() != null) {
+			this.email = datosActualizarUsuario.email();
+		}
+		if (datosActualizarUsuario.contrasena() != null) {
+			this.contrasena = datosActualizarUsuario.contrasena();
+		}
+	}
+
+	public void actualizar(@Valid DatosActualizarUsuario datosActualizarUsuario, String contrasena) {
+		if (datosActualizarUsuario.nombre() != null) {
+			this.nombre = datosActualizarUsuario.nombre();
+		}
+		if (datosActualizarUsuario.email() != null) {
+			this.email = datosActualizarUsuario.email();
+		}
+		if (contrasena != null || !contrasena.isEmpty() || !contrasena.isBlank()) {
+			this.contrasena = contrasena;
+		}
+	}
+
+	public void eliminar() {
+		this.eliminado = true;
 	}
 }
