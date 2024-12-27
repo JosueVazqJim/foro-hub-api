@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,6 +39,7 @@ public class UsuarioController {
 		return ResponseEntity.created(uri).body(respuesta);
 	}
 
+	@SecurityRequirement(name = "bearer-key")
 	@GetMapping
 	@Parameters({
 			@Parameter(name = "page", in = ParameterIn.QUERY, schema = @Schema(type = "integer", defaultValue = "0")),
@@ -48,12 +50,14 @@ public class UsuarioController {
 		return ResponseEntity.ok(usuarioRepository.findAll(paginacion).map(DatosListadoUsuarios::new));
 	}
 
+	@SecurityRequirement(name = "bearer-key")
 	@GetMapping("/{id}")
 	public ResponseEntity<DatosListadoUsuarios> getUsuario(@PathVariable @Valid Long id) {
 		var usuario = usuarioRepository.findById(id).orElseThrow();
 		return ResponseEntity.ok(new DatosListadoUsuarios(usuario));
 	}
 
+	@SecurityRequirement(name = "bearer-key")
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<DatosResUsuario> actualizarUsuario(@PathVariable @Valid Long id,
@@ -63,6 +67,7 @@ public class UsuarioController {
 		return ResponseEntity.ok(respuesta);
 	}
 
+	@SecurityRequirement(name = "bearer-key")
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity eliminarUsuario(@PathVariable @Valid Long id) {
