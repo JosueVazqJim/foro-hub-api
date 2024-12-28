@@ -2,6 +2,9 @@ package foro.hub.api.controller;
 
 import foro.hub.api.domain.UsuarioInvalido;
 import foro.hub.api.domain.ValidacionException;
+import foro.hub.api.domain.perfil.DatosListadoPerfiles;
+import foro.hub.api.domain.perfil.DatosResPerfil;
+import foro.hub.api.domain.perfil.Perfil;
 import foro.hub.api.domain.usuario.*;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -79,5 +83,18 @@ public class UsuarioController {
 	public ResponseEntity eliminarUsuario(@PathVariable @Valid Long id) {
 		logicaUsuario.eliminar(id);
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/{idUsuario}/perfiles")
+	@SecurityRequirement(name = "bearer-key")
+	public ResponseEntity<List<DatosListadoPerfiles>> getPerfiles(@PathVariable Long idUsuario) {
+		Optional<Usuario> usuario = usuarioRepository.findByIdAndEliminadoFalse(idUsuario);
+		if (usuario.isEmpty()) {
+			throw new UsuarioInvalido("No existe un Usuario con el id indicado");
+		}
+		List<DatosListadoPerfiles> perfiles = usuario.get().getPerfiles().stream()
+				.map(DatosListadoPerfiles::new)
+				.toList();
+		return ResponseEntity.ok(perfiles);
 	}
 }

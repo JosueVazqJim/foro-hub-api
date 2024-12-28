@@ -1,5 +1,6 @@
 package foro.hub.api.domain.usuario;
 
+import foro.hub.api.domain.perfil.Perfil;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.*;
@@ -7,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,6 +28,9 @@ public class Usuario implements UserDetails {
 	private String email;
 	private String contrasena;
 	private boolean eliminado;
+
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Perfil> perfiles = new ArrayList<>();
 
 	public Usuario(DatosRegistroUsuario datosRegistroUsuario, String contrasena) {
 		this.nombre = datosRegistroUsuario.nombre();
@@ -95,5 +100,15 @@ public class Usuario implements UserDetails {
 
 	public void eliminar() {
 		this.eliminado = true;
+	}
+
+	public void addPerfil(Perfil perfil) {
+		perfiles.add(perfil);
+		perfil.setUsuario(this);
+	}
+
+	public void removePerfil(Perfil perfil) {
+		perfiles.remove(perfil);
+		perfil.setUsuario(null);
 	}
 }
