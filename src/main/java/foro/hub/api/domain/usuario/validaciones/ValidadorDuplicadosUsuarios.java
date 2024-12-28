@@ -14,9 +14,9 @@ public class ValidadorDuplicadosUsuarios implements IValidadoresUsuarios {
 
 	public void validar(DatosRegistroUsuario datosRegistroUsuario) {
 		//buscaoms si existe un topico con los mismos datos
-		boolean duplicado = usuarioRepository.findByEmail(datosRegistroUsuario.email());
+		boolean duplicado = usuarioRepository.existsByEmail(datosRegistroUsuario.email());
 		if (duplicado) {
-			throw new ValidacionException("Ya existe un Usuario con el mismo email");
+			throw new ValidacionException("Ya existe un Perfil con el mismo email");
 		}
 	}
 }

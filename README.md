@@ -261,23 +261,23 @@
 															</tr>
 															</table>
 															<details>
-																<summary><b>usuario</b></summary>
+																<summary><b>perfil</b></summary>
 																<blockquote>
 																	<table>
 																	<tr>
-																		<td><b><a href='https://github.com/JosueVazqJim/foro-hub-api/blob/master/src/main/java/foro/hub/api/domain/usuario/DatosRegistroUsuario.java'>DatosRegistroUsuario.java</a></b></td>
+																		<td><b><a href='https://github.com/JosueVazqJim/foro-hub-api/blob/master/src/main/java/foro/hub/api/domain/perfil/DatosRegistroUsuario.java'>DatosRegistroUsuario.java</a></b></td>
 																		<td><code>❯ REPLACE-ME</code></td>
 																	</tr>
 																	<tr>
-																		<td><b><a href='https://github.com/JosueVazqJim/foro-hub-api/blob/master/src/main/java/foro/hub/api/domain/usuario/Usuario.java'>Usuario.java</a></b></td>
+																		<td><b><a href='https://github.com/JosueVazqJim/foro-hub-api/blob/master/src/main/java/foro/hub/api/domain/perfil/Usuario.java'>Usuario.java</a></b></td>
 																		<td><code>❯ REPLACE-ME</code></td>
 																	</tr>
 																	<tr>
-																		<td><b><a href='https://github.com/JosueVazqJim/foro-hub-api/blob/master/src/main/java/foro/hub/api/domain/usuario/DatosAutenticacionUsuario.java'>DatosAutenticacionUsuario.java</a></b></td>
+																		<td><b><a href='https://github.com/JosueVazqJim/foro-hub-api/blob/master/src/main/java/foro/hub/api/domain/perfil/DatosAutenticacionUsuario.java'>DatosAutenticacionUsuario.java</a></b></td>
 																		<td><code>❯ REPLACE-ME</code></td>
 																	</tr>
 																	<tr>
-																		<td><b><a href='https://github.com/JosueVazqJim/foro-hub-api/blob/master/src/main/java/foro/hub/api/domain/usuario/UsuarioRepository.java'>UsuarioRepository.java</a></b></td>
+																		<td><b><a href='https://github.com/JosueVazqJim/foro-hub-api/blob/master/src/main/java/foro/hub/api/domain/perfil/UsuarioRepository.java'>UsuarioRepository.java</a></b></td>
 																		<td><code>❯ REPLACE-ME</code></td>
 																	</tr>
 																	</table>

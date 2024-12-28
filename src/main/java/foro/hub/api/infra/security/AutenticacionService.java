@@ -25,8 +25,8 @@ public class AutenticacionService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		var usuario = usuarioRepository.findByNombre(username);
 		if (usuario == null) {
-			System.out.println("Usuario invalido");
-			throw new UsuarioInvalido("Usuario no encontrado");
+			System.out.println("Perfil invalido");
+			throw new UsuarioInvalido("Perfil no encontrado");
 		}
 		return usuario;
 	}

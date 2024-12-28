@@ -1,5 +1,6 @@
 package foro.hub.api.infra.errores;
 
+import foro.hub.api.domain.PerfilInvalido;
 import foro.hub.api.domain.UsuarioInvalido;
 import foro.hub.api.domain.ValidacionException;
 import jakarta.persistence.EntityNotFoundException;
@@ -46,8 +47,13 @@ public class TratadorErrores {
 	}
 
 	@ExceptionHandler(UsuarioInvalido.class)
-	public ResponseEntity usuarioNoEncontrado() {
-		return ResponseEntity.notFound().build();
+	public ResponseEntity usuarioNoEncontrado( UsuarioInvalido e) {
+		return ResponseEntity.status(404).body(new DatosError(e.getMessage()));
+	}
+
+	@ExceptionHandler(PerfilInvalido.class)
+	public ResponseEntity PerfilNoEncontrado( PerfilInvalido e) {
+		return ResponseEntity.status(404).body(new DatosError(e.getMessage()));
 	}
 
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)

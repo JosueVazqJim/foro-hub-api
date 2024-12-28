@@ -1,5 +1,6 @@
 package foro.hub.api.controller;
 
+import foro.hub.api.domain.UsuarioInvalido;
 import foro.hub.api.domain.ValidacionException;
 import foro.hub.api.domain.usuario.*;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -47,14 +49,18 @@ public class UsuarioController {
 			@Parameter(name = "sort", in = ParameterIn.QUERY, schema = @Schema(type = "string", example = "nombre"))
 	})
 	public ResponseEntity<Page<DatosListadoUsuarios>> getUsuarios(@PageableDefault(size = 10) Pageable paginacion) {
-		return ResponseEntity.ok(usuarioRepository.findAll(paginacion).map(DatosListadoUsuarios::new));
+		return ResponseEntity.ok(usuarioRepository.findByEliminadoFalse(paginacion).map(DatosListadoUsuarios::new));
 	}
 
 	@SecurityRequirement(name = "bearer-key")
 	@GetMapping("/{id}")
 	public ResponseEntity<DatosListadoUsuarios> getUsuario(@PathVariable @Valid Long id) {
-		var usuario = usuarioRepository.findById(id).orElseThrow();
-		return ResponseEntity.ok(new DatosListadoUsuarios(usuario));
+		System.out.println("id: " + id);
+		Optional<Usuario> usuario = usuarioRepository.findByIdAndEliminadoFalse(id);
+		if (usuario.isEmpty()) {
+			throw new UsuarioInvalido("No existe un Usuario con el id indicadosssssss");
+		}
+		return ResponseEntity.ok(new DatosListadoUsuarios(usuario.get()));
 	}
 
 	@SecurityRequirement(name = "bearer-key")

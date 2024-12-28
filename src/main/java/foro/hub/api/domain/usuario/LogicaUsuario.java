@@ -35,9 +35,9 @@ public class LogicaUsuario {
 		var optionalUsuario = usuarioRepository.findByIdAndEliminadoFalse(id);
 		if (optionalUsuario.isPresent()) {
 			var usuario = optionalUsuario.get();
-			boolean duplicado = usuarioRepository.findByEmail(usuario.getEmail());
+			boolean duplicado = usuarioRepository.existsByEmail(usuario.getEmail());
 			if (duplicado) {
-				throw new ValidacionException("Ya existe un Usuario con el mismo email");
+				throw new ValidacionException("Ya existe un Perfil con el mismo email");
 			}
 			if (datosActualizarUsuario.contrasena() != null) {
 				usuario.actualizar(datosActualizarUsuario, encriptarBCrypt(datosActualizarUsuario.contrasena()));
@@ -47,7 +47,7 @@ public class LogicaUsuario {
 			usuarioRepository.save(usuario);
 			return new DatosResUsuario(usuario.getId(), usuario.getNombre(), usuario.getEmail());
 		} else {
-			throw new NoSuchElementException("No existe un Usuario con el id indicado");
+			throw new NoSuchElementException("No existe un Perfil con el id indicado");
 		}
 	}
 
@@ -59,7 +59,7 @@ public class LogicaUsuario {
 			usuarioRepository.save(usuario);
 			//usuarioRepository.delete(optionalUsuario.get());
 		} else {
-			throw new ValidacionException("No existe un Usuario con el id indicado");
+			throw new ValidacionException("No existe un Perfil con el id indicado");
 		}
 	}
 
