@@ -108,7 +108,6 @@ public class Usuario implements UserDetails {
 	}
 
 	public void removePerfil(Perfil perfil) {
-		perfiles.remove(perfil);
-		perfil.setUsuario(null);
+		perfil.setEliminado(true);
 	}
 }

@@ -1,10 +1,9 @@
 package foro.hub.api.controller;
 
+import foro.hub.api.domain.PerfilInvalido;
 import foro.hub.api.domain.UsuarioInvalido;
 import foro.hub.api.domain.ValidacionException;
-import foro.hub.api.domain.perfil.DatosListadoPerfiles;
-import foro.hub.api.domain.perfil.DatosResPerfil;
-import foro.hub.api.domain.perfil.Perfil;
+import foro.hub.api.domain.perfil.*;
 import foro.hub.api.domain.usuario.*;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -32,6 +31,9 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+
+	@Autowired
+	private PerfilRepository perfilRepository;
 
 	@Autowired
 	private LogicaUsuario logicaUsuario;
@@ -93,8 +95,81 @@ public class UsuarioController {
 			throw new UsuarioInvalido("No existe un Usuario con el id indicado");
 		}
 		List<DatosListadoPerfiles> perfiles = usuario.get().getPerfiles().stream()
+				.filter(p -> !p.isEliminado())
 				.map(DatosListadoPerfiles::new)
 				.toList();
 		return ResponseEntity.ok(perfiles);
+	}
+
+	@GetMapping("/{idUsuario}/perfiles/{idPerfil}")
+	@SecurityRequirement(name = "bearer-key")
+	public ResponseEntity<DatosListadoPerfiles> GetSingularPerfil(@PathVariable Long idUsuario, @PathVariable Long idPerfil) {
+		Optional<Usuario> usuario = usuarioRepository.findByIdAndEliminadoFalse(idUsuario);
+		if (usuario.isEmpty()) {
+			throw new UsuarioInvalido("No existe un Usuario con el id indicado");
+		}
+		DatosListadoPerfiles perfil = usuario.get().getPerfiles().stream()
+				.filter(p -> p.getId().equals(idPerfil) && !p.isEliminado())
+				.findFirst()
+				.map(DatosListadoPerfiles::new)
+				.orElseThrow(() -> new PerfilInvalido("No existe un Perfil con el id indicado"));
+		return ResponseEntity.ok(perfil);
+	}
+
+	@PostMapping("/{idUsuario}/perfiles")
+	@Transactional
+	@SecurityRequirement(name = "bearer-key")
+	public ResponseEntity<DatosResPerfil> registrarPerfil(@PathVariable Long idUsuario, @RequestBody @Valid DatosRegistroUsuarioPerfil datos, UriComponentsBuilder uriComponentsBuilder) {
+		Optional<Usuario> usuario = usuarioRepository.findByIdAndEliminadoFalse(idUsuario);
+		if (usuario.isEmpty()) {
+			throw new UsuarioInvalido("No existe un Usuario con el id indicado");
+		}
+		//perfiles duplicados
+		boolean duplicado = perfilRepository.findByNombreAndIdUsuario(datos.nombre(), idUsuario);
+		if (duplicado) {
+			throw new ValidacionException("El usuario ya tiene un Perfil con el mismo nombre");
+		}
+		Perfil perfil = new Perfil(datos, usuario.get());
+		usuario.get().addPerfil(perfil);
+		usuarioRepository.save(usuario.get()); // This will cascade and save the perfil as well
+		DatosResPerfil respuesta = new DatosResPerfil(perfil.getId(), perfil.getNombre(), idUsuario);
+		URI uri = uriComponentsBuilder.path("/usuarios/{idUsuario}/perfiles/{idPerfil}").buildAndExpand(idUsuario, perfil.getId()).toUri();
+		return ResponseEntity.created(uri).body(respuesta);
+	}
+
+
+	@PutMapping("/{idUsuario}/perfiles/{idPerfil}")
+	@Transactional
+	@SecurityRequirement(name = "bearer-key")
+	public ResponseEntity<DatosResPerfil> actualizarPerfil(@PathVariable Long idUsuario, @PathVariable Long idPerfil,
+	                                                       @RequestBody @Valid DatosActualizarPerfil datosActualizarPerfil) {
+		Optional<Usuario> usuario = usuarioRepository.findByIdAndEliminadoFalse(idUsuario);
+		if (usuario.isEmpty()) {
+			throw new UsuarioInvalido("No existe un Usuario con el id indicado");
+		}
+		Perfil perfil = usuario.get().getPerfiles().stream()
+				.filter(p -> p.getId().equals(idPerfil))
+				.findFirst()
+				.orElseThrow(() -> new PerfilInvalido("No existe un Perfil con el id indicado"));
+		perfil.actualizar(datosActualizarPerfil);
+		usuarioRepository.save(usuario.get());
+		return ResponseEntity.ok(new DatosResPerfil(perfil.getId(), perfil.getNombre(), idUsuario));
+	}
+
+	@DeleteMapping("/{idUsuario}/perfiles/{idPerfil}")
+	@Transactional
+	@SecurityRequirement(name = "bearer-key")
+	public ResponseEntity eliminarPerfil(@PathVariable Long idUsuario, @PathVariable Long idPerfil) {
+		Optional<Usuario> usuario = usuarioRepository.findByIdAndEliminadoFalse(idUsuario);
+		if (usuario.isEmpty()) {
+			throw new UsuarioInvalido("No existe un Usuario con el id indicado");
+		}
+		Perfil perfil = usuario.get().getPerfiles().stream()
+				.filter(p -> p.getId().equals(idPerfil) && !p.isEliminado())
+				.findFirst()
+				.orElseThrow(() -> new UsuarioInvalido("No existe un Perfil con el id indicado"));
+		usuario.get().removePerfil(perfil);
+		usuarioRepository.save(usuario.get());
+		return ResponseEntity.noContent().build();
 	}
 }

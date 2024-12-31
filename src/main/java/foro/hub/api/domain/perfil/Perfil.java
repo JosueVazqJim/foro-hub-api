@@ -1,5 +1,6 @@
 package foro.hub.api.domain.perfil;
 
+import foro.hub.api.domain.usuario.DatosRegistroUsuarioPerfil;
 import foro.hub.api.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -27,6 +28,12 @@ public class Perfil {
 
 	public Perfil(DatosRegistroPerfil datosRegistroPerfil, Usuario usuario) {
 		this.nombre = datosRegistroPerfil.nombre();
+		this.usuario = usuario;
+		this.eliminado = false;
+	}
+
+	public Perfil(DatosRegistroUsuarioPerfil datosRegistroUsuarioPerfil, Usuario usuario) {
+		this.nombre = datosRegistroUsuarioPerfil.nombre();
 		this.usuario = usuario;
 		this.eliminado = false;
 	}
