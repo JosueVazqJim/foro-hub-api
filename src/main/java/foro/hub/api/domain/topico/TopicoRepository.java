@@ -21,4 +21,6 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
 
 	@Query("SELECT t FROM Topico t WHERE t.id = :id AND t.eliminado = false")
 	Optional<Topico> findByIdAndEliminadoFalse(@NotNull Long id);
+
+	boolean existsByIdAndEliminadoFalse(@NotNull Long aLong);
 }

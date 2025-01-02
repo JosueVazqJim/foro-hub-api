@@ -1,0 +1,1 @@
+ALTER TABLE respuestas CHANGE `fechaCreacion` `fecha_creacion` varchar(255);
