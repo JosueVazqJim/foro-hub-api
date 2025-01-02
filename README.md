@@ -46,17 +46,30 @@
 
 ## 👾 Features
 
+
 <code>❯ User authentication y authorization usando JWT.</code>
 
-<code>❯ Operaciones CRUD para tópicos.</code>
+<code>❯ Operaciones CRUD para usuarios, perfiles, topicos y respuestas.</code>
 
 <code>❯ Manejo de errores personalizado.</code>
 
 <code>❯ Migraciones de base de datos con Flyway.</code>
 
-<code>❯ Encriptación de contraseñas con BCrypt..</code>
+<code>❯ Encriptación de contraseñas con BCrypt.</code>
 
 <code>❯ Gestión de sesiones sin estado.</code>
+
+<code>❯ API Documentation with Swagger/OpenAPI.</code>
+
+<code>❯ Unit and Integration Testing with JUnit.</code>
+
+<code>❯ Role-based Access Control (RBAC).</code>
+
+<code>❯ Pagination and Sorting for API endpoints.</code>
+
+<code>❯ Data Validation with Jakarta Bean Validation.</code>
+
+<code>❯ Exception Handling with Custom Error Responses.</code>
 
 
 ---
@@ -65,17 +78,73 @@
 
 ### Endpoint Responses
 
-#### \`GET /topicos\`
+<details open>
+
+<summary>Topicos</summary>
+
+##### \`GET /topicos\`
 ![GET /topicos](images/get.png)
 
-#### \`POST /topicos\`
+##### \`POST /topicos\`
 ![POST /topicos](images/post.png)
 
-#### \`PUT /topicos/{id}\`
+##### \`PUT /topicos/{id}\`
 ![PUT /topicos/{id}](images/put.png)
 
-#### \`DELETE /topicos/{id}\`
+##### \`DELETE /topicos/{id}\`
 ![DELETE /topicos/{id}](images/delete.png)
+</details>
+
+<details close>
+
+<summary>Usuarios</summary>
+
+##### \`GET /usuarios\`
+![GET /usuarios](images/usuarios/get.png)
+
+##### \`POST /usuarios\`
+![POST /usuarios](images/usuarios/post.png)
+
+##### \`PUT /usuarios/{id}\`
+![PUT /usuarios/{id}](images/usuarios/put.png)
+
+##### \`DELETE /usuarios/{id}\`
+![DELETE /usuarios/{id}](images/usuarios/delete.png)
+</details>
+
+<details close>
+
+<summary>Perfiles</summary>
+
+##### \`GET /perfiles\`
+![GET /perfiles](images/perfiles/get.png)
+
+##### \`POST /perfiles\`
+![POST /perfiles](images/perfiles/post.png)
+
+##### \`PUT /perfiles/{id}\`
+![PUT /perfiles/{id}](images/perfiles/put.png)
+
+##### \`DELETE /perfiles/{id}\`
+![DELETE /perfiles/{id}](images/perfiles/delete.png)
+</details>
+
+<details close>
+
+<summary>Respuestas</summary>
+
+##### \`GET /respuestas\`
+![GET /respuestas](images/respuestas/get.png)
+
+##### \`POST /respuestas\`
+![POST /respuestas](images/respuestas/post.png)
+
+##### \`PUT /respuestas/{id}\`
+![PUT /respuestas/{id}](images/respuestas/put.png)
+
+##### \`DELETE /respuestas/{id}\`
+![DELETE /respuestas/{id}](images/respuestas/delete.png)
+</details>
 
 ## 📁 Project Structure
 
@@ -492,7 +561,7 @@ Run foro-hub-api using the following command:
 8. **Review**: Once your PR is reviewed and approved, it will be merged into the main branch. Congratulations on your contribution!
 </details>
 
-<details closed>
+<details open>
 <summary>Contributor Graph</summary>
 <br>
 <p align="left">
@@ -504,10 +573,3 @@ Run foro-hub-api using the following command:
 
 ---
 
-
-
-## 🙌 Acknowledgments
-
-- List any resources, contributors, inspiration, etc. here.
-
----
