@@ -35,7 +35,7 @@ public class LogicaUsuario {
 		var optionalUsuario = usuarioRepository.findByIdAndEliminadoFalse(id);
 		if (optionalUsuario.isPresent()) {
 			var usuario = optionalUsuario.get();
-			boolean duplicado = usuarioRepository.existsByEmail(usuario.getEmail());
+			boolean duplicado = usuarioRepository.existsByEmail(datosActualizarUsuario.email());
 			if (duplicado) {
 				throw new ValidacionException("Ya existe un Perfil con el mismo email");
 			}
